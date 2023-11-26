@@ -190,8 +190,9 @@ class AdminController extends Controller
 
        $bgryInfo = BarangayInformation::all();
        $evaCenter = EvacuationCenter::all();
+       $ctype = CalamityType::all();
 
-        return view('admin.add-evacuees', compact('bgryInfo','evaCenter'));
+        return view('admin.add-evacuees', compact('bgryInfo','evaCenter','ctype'));
     }
 
     public function AddEvacueesInformation(Request $request){
@@ -206,6 +207,7 @@ class AdminController extends Controller
             'barangay' => 'required|max:255',
             'address' => 'required|max:255',
             'head_of_family' => 'required|max:255',
+            'type_of_calamity' => 'required|max:255',
             'evacuation_center' => 'required|max:255',
           ]);
 
@@ -234,8 +236,9 @@ class AdminController extends Controller
 
         $bgryInfo = BarangayInformation::all();
         $evaCenter = EvacuationCenter::all();
+        $ctype = CalamityType::all();
 
-        return view('admin.edit-evacueeinformation', compact('eInfo', 'evaInfo','bgryInfo','evaCenter'));
+        return view('admin.edit-evacueeinformation', compact('eInfo', 'evaInfo','bgryInfo','evaCenter','ctype'));
 
     }
 
@@ -251,6 +254,7 @@ class AdminController extends Controller
             'barangay' => 'required|max:255',
             'address' => 'required|max:255',
             'head_of_family' => 'required|max:255',
+            'type_of_calamity' => 'required|max:255',
             'evacuation_center' => 'required|max:255',
         ]);
 
@@ -343,34 +347,101 @@ class AdminController extends Controller
 
     public function ViewallGenderReport(){
 
-        $gender = EvacueeInformation::selectRaw('
-        COUNT(CASE WHEN gender = "Male" THEN "Male" ELSE NULL END) as "male",
-        COUNT(CASE WHEN gender = "Female" THEN "Female" ELSE NULL END) as "female",
-        COUNT(*) as "all"
-    ')->get();
+            $gender = EvacueeInformation::selectRaw('
+            COUNT(CASE WHEN gender = "Male" THEN "Male" ELSE NULL END) as "male",
+            COUNT(CASE WHEN gender = "Female" THEN "Female" ELSE NULL END) as "female",
+            COUNT(*) as "all"
+        ')->get();
 
 
-        $rs = DB::table('evacuee_information')
-        ->selectRaw("count(case when gender = 'Male' then 1 end) as male")
-        ->selectRaw("count(case when gender = 'Female' then 1 end) as female")
-        ->first();
-        $data = [];       
-        $data['data'] = $rs;
-        $data['title'] = "Count Gender";
+            $rs = DB::table('evacuee_information')
+            ->selectRaw("count(case when gender = 'Male' then 1 end) as male")
+            ->selectRaw("count(case when gender = 'Female' then 1 end) as female")
+            ->first();
+            $data = [];       
+            $data['data'] = $rs;
+            $data['title'] = "Count Gender";
 
         return view('admin.gender-report', compact('gender'),  ['data'=>$data]);
     }
 
     public function ViewallBarangayReport(){
-        return view('admin.barangay-report');
+
+        $evinfocountbgry = EvacueeInformation::select('barangay', DB::raw("count(barangay) as Countevacuees"))
+        ->groupBy('barangay')
+        ->get();
+   
+        $evacueeBrgy = EvacueeInformation::select(
+            DB::raw('barangay as brgyname'))
+            ->groupBy('barangay')->get();
+
+        $result[] = ['brgyname'];
+
+        foreach ($evacueeBrgy as $key => $value) {
+
+            $result[++$key] = [$value->brgyname];
+
+            info($result);
+        }
+
+        $evacueeBrgy2 = EvacueeInformation::select(
+            DB::raw('count(barangay) as brgyCount'))
+            ->groupBy('barangay')->get();
+
+        $result2[] = ['brgyCount'];
+
+        foreach ($evacueeBrgy2 as $key => $value2) {
+
+            $result2[++$key] = $value2->brgyCount;
+
+            info($result2);
+        }
+
+        return view('admin.barangay-report', compact('evinfocountbgry'))
+        ->with('brgyname', json_encode($result))
+        ->with('brgyCount', json_encode($result2));
     }
 
-    public function ViewallAgeReport(){
-        return view('admin.age-report');
-    }
+    // public function ViewallAgeReport(){
+    //     return view('admin.age-report');
+    // }
 
     public function ViewallCalamityReport(){
-        return view('admin.calamity-report');
+        $evinfocountcalamity = EvacueeInformation::select('type_of_calamity', DB::raw("count(type_of_calamity) as Countofcalamitytype"))
+        ->groupBy('type_of_calamity')
+        ->get();
+
+        $calamitytypecount = EvacueeInformation::select(
+            DB::raw('type_of_calamity as calamityName'))
+            ->groupBy('type_of_calamity')->get();
+
+        $result[] = ['calamityName'];
+
+        foreach ($calamitytypecount as $key => $value) {
+
+            $result[++$key] = $value->calamityName;
+
+            info($result);
+        }
+
+        $calamitytypecount2 = EvacueeInformation::select(
+            DB::raw('count(type_of_calamity) as calamityCount'))
+            ->groupBy('type_of_calamity')->get();
+
+        $result2[] = ['calamityCount'];
+
+        foreach ($calamitytypecount2 as $key => $value2) {
+
+            $result2[++$key] = $value2->calamityCount;
+
+            info($result2);
+        }
+
+
+
+        return view('admin.calamity-report', compact('evinfocountcalamity'))
+        ->with('calamityName', json_encode($result))
+        ->with('calamityCount', json_encode($result2));
     }
 
     public function ViewallCenterReport(){

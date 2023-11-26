@@ -38,46 +38,12 @@
                                  </tr>
                              </thead>
                                     <tbody>
-                                       <tr>
-                                           <td>Barangay 1</td>
-                                           <td>22</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Barangay 2</td>
-                                           <td>5</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Barangay 3</td>
-                                           <td>10</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Barangay 4</td>
-                                           <td>15</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Barangay 5</td>
-                                           <td>10</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Barangay 6</td>
-                                           <td>8</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Barangay 7</td>
-                                           <td>9</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Barangay 8</td>
-                                           <td>5</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Barangay 9</td>
-                                           <td>7</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Barangay 10</td>
-                                           <td>9</td>
-                                       </tr>
+                                      @foreach ($evinfocountbgry as $row)
+                                        <tr>
+                                            <td>{{ $row->barangay }}</td>
+                                            <td>{{ $row->Countevacuees }}</td>
+                                        </tr>
+                                       @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -103,3 +69,32 @@
       </div>
       <!-- ./wrapper -->
       @endsection
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    
+            var barChartData = {
+                labels:  <?php echo '['. substr($brgyname,14)?>,
+                datasets: [{
+                    label: 'Count',
+                    backgroundColor: 'rgb(79,129,189)',
+                    borderColor: 'rgba(0, 158, 251, 1)',
+                    borderWidth: 1,
+                    data: <?php echo '['. substr($brgyCount, 15)?>,
+                }]
+            };
+    
+            var ctx = document.getElementById('bargraph').getContext('2d');
+            window.myBar = new Chart(ctx, {
+                type: 'bar',
+                data: barChartData,
+                options: {
+                    responsive: true,
+                    legend: {
+                        display: false,
+                    }
+                }
+            });
+    
+        });
+    </script>

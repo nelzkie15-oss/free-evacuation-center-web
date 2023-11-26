@@ -16,10 +16,8 @@
 
 
 
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function () {
-
-        // Bar Chart
 
         var barChartData = {
             labels: ["Barangay 1","Barangay 2","Barangay 3","Barangay 4","Barangay 5","Barangay 6","Barangay 7","Barangay 8","Barangay 9","Barangay 10"],
@@ -45,9 +43,9 @@
         });
 
     });
-</script>
+</script> --}}
 
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function () {
 
         // Bar Chart
@@ -76,9 +74,9 @@
         });
 
     });
-</script>
+</script> --}}
 
-<script>
+{{-- <script>
     document.addEventListener("DOMContentLoaded", function () {
         // Pie chart
         new Chart(document.getElementById("chartjs-pie2"), {
@@ -104,7 +102,7 @@
         });
 
     });
-</script>
+</script> --}}
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {

@@ -17,6 +17,7 @@ class EvacueeInformation extends Model
         'barangay',
         'address',
         'head_of_family',
+        'type_of_calamity',
         'evacuation_center',
       ];
 

@@ -153,12 +153,12 @@
              <p>Evacuees by Brgy</p>
           </a>
        </li>
-       <li class="nav-item">
+       {{-- <li class="nav-item">
           <a href="{{ route('admin.age-report') }}" class="nav-link">
              <i class="nav-icon fa fa-sort-numeric-up-alt"></i>
              <p>Evacuees by Age</p>
           </a>
-       </li>
+       </li> --}}
        <li class="nav-item">
           <a href="{{ route('admin.calamity-report') }}" class="nav-link">
              <i class="nav-icon fa fa-globe-asia"></i>

@@ -38,18 +38,12 @@
                                   </tr>
                               </thead>
                               <tbody>
+                                @foreach ($evinfocountcalamity as $row)
                                  <tr>
-                                     <td>Flood</td>
-                                     <td>25</td>
+                                     <td>{{ $row->type_of_calamity }}</td>
+                                     <td>{{ $row->Countofcalamitytype }}</td>
                                  </tr>
-                                 <tr>
-                                     <td>Typhoon</td>
-                                     <td>50</td>
-                                 </tr>
-                                 <tr>
-                                     <td>Earthquake</td>
-                                     <td>25</td>
-                                 </tr>
+                                 @endforeach
                               </tbody>
                           </table>
                           </div>
@@ -78,3 +72,32 @@
       <!-- ./wrapper -->
       <!-- jQuery -->
       @endsection
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Pie chart
+            new Chart(document.getElementById("chartjs-pie2"), {
+                type: "pie",
+                data: {
+                    labels: <?php echo '['. substr($calamityName,18)?>,
+                    datasets: [{
+                        data: <?php echo '['. substr($calamityCount,19)?>,
+                        backgroundColor: [
+                            window.theme.primary,
+                            window.theme.danger,
+                            window.theme.warning,
+                        ],
+                        borderColor: "transparent"
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: true,
+                    legend: {
+                        display: true,
+                    }
+                }
+            });
+    
+        });
+    </script>
+    

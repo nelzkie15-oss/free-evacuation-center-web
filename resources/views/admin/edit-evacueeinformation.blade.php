@@ -121,7 +121,7 @@
                                   @enderror
                                  </div>
                                  
-                                 <div class="col-md-6">
+                                 <div class="col-md-4">
                                     <div class="form-group">
                                        <label>Head of Family</label>
                                        <input type="text" class="form-control @error('head_of_family') is-invalid @enderror" name="head_of_family" value="{{ $eInfo->head_of_family }}" placeholder="Head of Family">
@@ -130,7 +130,20 @@
                                     <div class="alert alert-danger">{{ $message }}</div>
                                   @enderror
                                  </div>
-                                 <div class="col-md-6">
+                                 <div class="col-md-4">
+                                    <div class="form-group">
+                                       <label>Calamity Type</label>
+                                       <select class="form-control @error('type_of_calamity') is-invalid @enderror" value="{{ $eInfo->type_of_calamity }}" name="type_of_calamity">
+                                          {{-- <option selected>&larr; Select Calamity Type &rarr;</option> --}}
+                                          <option value="{{ $eInfo->type_of_calamity }}">{{ $eInfo->type_of_calamity }}</option> 
+                                          
+                                       </select>
+                                    </div>
+                                    @error('type_of_calamity')
+                                    <div class="alert alert-danger">{{ $message }}</div>
+                                  @enderror
+                                 </div>
+                                 <div class="col-md-4">
                                     <div class="form-group">
                                        <label>Evacuation Center</label>
                                        <select class="form-control @error('evacuation_center') is-invalid @enderror" name="evacuation_center" value="{{ $eInfo->evacuation_center }}">
