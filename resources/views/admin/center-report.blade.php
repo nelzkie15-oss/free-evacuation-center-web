@@ -38,26 +38,12 @@
                                  </tr>
                              </thead>
                                     <tbody>
+                                     @foreach ($evinfocountevacuationcenter as $row)
                                        <tr>
-                                           <td>Center 1</td>
-                                           <td>25</td>
+                                           <td>{{ $row->evacuation_center }}</td>
+                                           <td>{{ $row->Countevacuationcenter }}</td>
                                        </tr>
-                                       <tr>
-                                           <td>Center 2</td>
-                                           <td>10</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Center 3</td>
-                                           <td>25</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Center 4</td>
-                                           <td>30</td>
-                                       </tr>
-                                       <tr>
-                                           <td>Center 5</td>
-                                           <td>10</td>
-                                       </tr>
+                                       @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -84,3 +70,35 @@
       <!-- ./wrapper -->
       <!-- jQuery -->
       @endsection
+
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    
+            // Bar Chart
+    
+            var barChartData = {
+                labels: <?php echo '['. substr($evcenterName,18) ?>,
+                datasets: [{
+                    label: 'Count',
+                    backgroundColor: 'rgb(79,129,189)',
+                    borderColor: 'rgba(0, 158, 251, 1)',
+                    borderWidth: 1,
+                    data: <?php echo '['. substr($evacuationcenterCount, 27) ?>,
+                }]
+            };
+    
+            var ctx = document.getElementById('bargraph2').getContext('2d');
+            window.myBar = new Chart(ctx, {
+                type: 'bar',
+                data: barChartData,
+                options: {
+                    responsive: true,
+                    legend: {
+                        display: false,
+                    }
+                }
+            });
+    
+        });
+    </script>

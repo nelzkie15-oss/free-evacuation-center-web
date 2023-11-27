@@ -407,6 +407,7 @@ class AdminController extends Controller
     // }
 
     public function ViewallCalamityReport(){
+        
         $evinfocountcalamity = EvacueeInformation::select('type_of_calamity', DB::raw("count(type_of_calamity) as Countofcalamitytype"))
         ->groupBy('type_of_calamity')
         ->get();
@@ -445,6 +446,42 @@ class AdminController extends Controller
     }
 
     public function ViewallCenterReport(){
-        return view('admin.center-report');
+
+        $evinfocountevacuationcenter = EvacueeInformation::select('evacuation_center', DB::raw("count(evacuation_center) as Countevacuationcenter"))
+        ->groupBy('evacuation_center')
+        ->get();
+
+
+        $evacuationcentername = EvacueeInformation::select(
+            DB::raw('evacuation_center as evcenterName'))
+            ->groupBy('evacuation_center')->get();
+
+        $result[] = ['evcenterName'];
+
+        foreach ($evacuationcentername as $key => $value) {
+
+            $result[++$key] = $value->evcenterName;
+
+            info($result);
+        }
+
+        $evacuationcentercount = EvacueeInformation::select(
+            DB::raw('count(evacuation_center) as evacuationcenterCount'))
+            ->groupBy('evacuation_center')->get();
+
+        $result2[] = ['evacuationcenterCount'];
+
+        foreach ($evacuationcentercount as $key => $value2) {
+
+            $result2[++$key] = $value2->evacuationcenterCount;
+
+            info($result2);
+        }
+
+
+
+        return view('admin.center-report', compact('evinfocountevacuationcenter'))
+        ->with('evcenterName', json_encode($result))
+        ->with('evacuationcenterCount', json_encode($result2));
     }
 }
